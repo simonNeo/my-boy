@@ -1,0 +1,5 @@
+.vscode
+node_modules
+scripts/model
+test
+.git

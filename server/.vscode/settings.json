@@ -1,0 +1,9 @@
+{
+  "editor.formatOnSave": true,
+  "cSpell.words": ["Dimission"],
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "workbench.colorCustomizations": {
+    "minimap.background": "#00000088",
+    "scrollbar.shadow": "#00000088"
+  }
+}

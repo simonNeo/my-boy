@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faya-course-server
+  namespace: default
+  labels:
+    app: faya-course-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faya-course-server
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      annotations:
+        armsPilotAutoEnable: 'on'
+        armsPilotCreateAppName: faya-course-server
+      labels:
+        app: faya-course-server
+    spec:
+      containers:
+        - name: faya-course-server
+          env:
+            - name: DB_MASTER_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: DB_MASTER_HOST
+                  name: db-master
+            - name: DB_MASTER_USER
+              valueFrom:
+                secretKeyRef:
+                  key: DB_MASTER_USER
+                  name: db-master
+            - name: DB_MASTER_PWD
+              valueFrom:
+                secretKeyRef:
+                  key: DB_MASTER_PWD
+                  name: db-master
+            - name: MAIN_REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: MAIN_REDIS_HOST
+                  name: db-master
+            - name: MAIN_REDIS_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MAIN_REDIS_USER
+                  name: db-master
+            - name: MAIN_REDIS_PWD
+              valueFrom:
+                secretKeyRef:
+                  key: MAIN_REDIS_PWD
+                  name: db-master
+          image: registry.cn-beijing.aliyuncs.com/styy/faya-course-server:45748ee
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: tcp
+          lifecycle:
+            preStop:
+              exec:
+                command: ['/bin/sh', '-c', 'sleep 5']
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 3072Mi
+      imagePullSecrets:
+        - name: aliyun-miki-docker

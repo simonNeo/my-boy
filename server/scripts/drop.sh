@@ -1,0 +1,1 @@
+yarn sequelize db:migrate:undo:all
